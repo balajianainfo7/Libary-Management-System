@@ -2,6 +2,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:libary_anainfo/bookmark/bookmarks_page.dart';
 import 'package:libary_anainfo/home_page/Authorpage.dart';
 import 'package:libary_anainfo/home_page/Authorpage1.dart';
@@ -18,20 +19,22 @@ import 'package:libary_anainfo/new/consttants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Categories/detailedPage.dart';
 import '../Navigation/BooksAll.dart';
-import 'components/size_config.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
+import '../home_page/components/size_config.dart';
+
 String token = "";
-class HomePageView extends StatefulWidget {
-  const HomePageView({Key? key}) : super(key: key);
+class SamplePageView extends StatefulWidget {
+  const SamplePageView({Key? key}) : super(key: key);
 
   @override
-  _HomePageViewState createState() => _HomePageViewState();
+  _SamplePageViewState createState() => _SamplePageViewState();
 }
 
-class _HomePageViewState extends State<HomePageView> {
+class _SamplePageViewState extends State<SamplePageView> {
 
 
  @override
@@ -140,12 +143,12 @@ class _HomePageViewState extends State<HomePageView> {
   List<Food1> _posts = [];
 
    Future<List<BooksAll>> fetchAll() async {
-    final url = 'http://192.168.1.77:4000/users/getAllbookbyuser';
+    final url = 'http://192.168.1.21:4000/users/getAllbookbyuser';
     print(url);
 
     final response = await http.get(Uri.parse(url), headers: <String, String>{
       'authorization':
-          '$token'
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNWJiOWI2ODExYWFhNjhhZWIzYzA2MCIsImlhdCI6MTY3MjIzNTQ1OSwiZXhwIjoxNzAzNzcxNDU5fQ.IPVY6bX-rW5MGD-g4rK29JAQJlYrNXk6hP5SHRJpUX0'
     });
 
     final body = json.decode(response.body);
@@ -159,12 +162,12 @@ class _HomePageViewState extends State<HomePageView> {
   }
 
   Future<List<Food1>> fetchFood() async {
-    final url = 'http://192.168.1.77:4000/users/getbycategory?Category=Civil';
+    final url = 'http://192.168.1.21:4000/users/getbycategory?Category=Civil';
     print(url);
 
     final response = await http.get(Uri.parse(url), headers: <String, String>{
       'authorization':
-          '$token'
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNWJiOWI2ODExYWFhNjhhZWIzYzA2MCIsImlhdCI6MTY3MjIzNTQ1OSwiZXhwIjoxNzAzNzcxNDU5fQ.IPVY6bX-rW5MGD-g4rK29JAQJlYrNXk6hP5SHRJpUX0'
     });
 
     final body = json.decode(response.body);
@@ -185,7 +188,7 @@ class _HomePageViewState extends State<HomePageView> {
   void requestRide(id) async {
       print("object");
                       final response = await http.post(
-                        Uri.parse("http://192.168.1.77:4000/users/issuebooks"),
+                        Uri.parse("http://192.168.1.21:4000/users/issuebooks"),
                         headers: <String, String>{
                           'Content-type': 'application/json; charset=UTF-8',
                           'authorization':
@@ -363,8 +366,7 @@ class _HomePageViewState extends State<HomePageView> {
 
      FoodPart(partName: "Recommed"),
 
-                         Column(
-                           children: [
+                         
           //                   IconButton(onPressed: (){
           //                     Navigator.pushReplacement(
           // context,
@@ -383,199 +385,67 @@ class _HomePageViewState extends State<HomePageView> {
               itemCount: foodList!.length,
               itemBuilder: (context, index){
                 var food = foodList[index];
-                return Column(
-                  children: [
-                        Container(
-      margin: EdgeInsets.only(left: 24, ),
-      height: 235,
-      width: 202,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            top: 0,
-            child: Container(
-              // height: 300,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(29),
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0, 10),
-                    blurRadius: 33,
-                    color: kShadowColor,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          ClipRRect(
-             
-                
-                borderRadius: BorderRadius.circular(29),
-                
-              
-            child: Image(image: NetworkImage("${foo}${food.image}")
-              ,
-              width: 200,
-            ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: Column(
-              children: <Widget>[
-                
-              IconButton(
-                icon: Icon( Icons.star),
-                onPressed: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => BookmarksPage(),
-                  //     ));
-                },
-
-              ),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 160,
-            
-            child: Container(
-              height: 77,
-              width: 202,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 24),
-                    child: RichText(
-                      maxLines: 2,
-                      text: TextSpan(
-                        style: TextStyle(color: kBlackColor),
-                        children: [
-                              TextSpan(
-                                text: "${food.title}\n",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(
-                                text: "${food.author}",
-                                style: TextStyle(
-                                  color: kLightBlackColor,
-                                ),
-                              ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // SizedBox(width: 70,),
-                  
-                  ],),
-                  Spacer(),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return DetailPage(id: food.bookId.toString(),);
-                                      },
+                return Container(
+                      child: Expanded(
+                        flex: 1,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                                top: 50,
+                                left: 40,
+                                width: 220,
+                                height: 190,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            "${foo}${food.image}"),
+                                        fit: BoxFit.fill),
+                                    borderRadius: BorderRadius.circular(28),
+                                  ),
+                                )),
+                            Positioned(
+                                top: 230,
+                                left: 50,
+                                width: 200,
+                                height: 130,
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 15, left: 15),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                            "Balaji",
+                                            style: GoogleFonts.nunito(textStyle: Theme.of(context).textTheme.displaySmall, fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black, decoration: TextDecoration.none),
+                                          ),
+                                          
+                                          Text(
+                                            "data",
+                                            style: TextStyle(
+                                                decoration: TextDecoration.none, fontSize: 20),
+                                          ),
+                                            ],
+                                          )
+                                          
+                                          
+                                        ],
+                                      ),
                                     ),
-                                  );
-                                
-                          },
-                          child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(29),
-                                  bottomLeft: Radius.circular(29),
-                                ),
-                              ),
-                              child: Text(
-                                "Details",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(28),
+                                  ),
+                                ))
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: GestureDetector(
-      onTap: (){
-        // Navigator.push(
-        //                           context,
-        //                           MaterialPageRoute(
-        //                             builder: (context) {
-        //                               return AuthorPage();
-        //                             },
-        //                           ),
-        //                         );
-
-        requestRide(food.id);
-      }  ,
-      child: Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: Color(0xFF29B6F6),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(29),
-            bottomRight: Radius.circular(29),
-          ),
-        ),
-        child: Text(
-          "Borrow",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-    ),
-                      
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-                      // ReadingListCard(
-                      //     image: ,
-                      //     title: ,
-                      //     auth: "",
-                      //     rating: 4.9,
-                      //     pressDetails: () {
-                               
-                      //     }, pressRead: (){
-                      //       GestureDetector(onTap: (){
-                      //         Navigator.push(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //           builder: (context) {
-                      //             return AuthorPage();
-                      //           },
-                      //         ),
-                      //       );
-                      //       },);
-                                 
-                      //     },
-                      //   ),
-                    
-                  ],
-                );
+                    );
               },
             ),
           );
@@ -585,8 +455,7 @@ class _HomePageViewState extends State<HomePageView> {
         }
       },
     ),
-                           ],
-                         ),
+                           
                         
                         FoodPart(partName: "All Books"),
 
@@ -814,11 +683,6 @@ class _HomePageViewState extends State<HomePageView> {
     ),
                            ],
                          ),
-            FoodPart(partName: "Popular"),
-            RecommedFoods(),
-            FoodPart(partName: "Story"),
-            RecommedFoods(),
-            // TrendingMovies()
                              ],
                           ),
                         ),

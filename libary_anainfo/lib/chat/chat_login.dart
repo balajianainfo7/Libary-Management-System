@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'model/message.dart';
-
+String token = '';
 class ChatScreen extends StatefulWidget {
   final String username;
   const ChatScreen({
@@ -19,6 +19,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+
+
+  
+
   final TextEditingController _messageController = new TextEditingController();
   
   final ScrollController _scrollController = ScrollController();
@@ -38,7 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     // SharedPreferences preferences = await SharedPreferences.getInstance();
-
+    _loadCounter();
     try {
       socket = IO.io(
           "https://library-anainfo.herokuapp.com/",
@@ -75,6 +79,24 @@ class _ChatScreenState extends State<ChatScreen> {
 
     super.initState();
     print(_messageController);
+  }
+
+  _loadCounter() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+     
+       token = (preferences.getString('token') ?? '');
+    });
+    // var token = await preferences.getString('token') as String;
+    // print(username);
+    // if (token == null) {
+    //   Navigator.of(context).pushAndRemoveUntil(
+    //       MaterialPageRoute(builder: (context) => new Login()),
+    //       ((route) => false));
+    // }
+    // phoneNumber = (preferences.getString('phoneNumber') ?? '');
+    
   }
 
   @override

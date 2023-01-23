@@ -17,13 +17,31 @@ import 'package:libary_anainfo/home_page/widgets/color_constant.dart';
 import 'package:libary_anainfo/home_page/widgets/custom_tab_indicator.dart';
 import 'package:libary_anainfo/new/Mech.dart';
 import 'package:libary_anainfo/sample/member_bookshelf_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Categories/detailedPage.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-
+String token = '';
 class BookShelf extends StatefulWidget {
   State<BookShelf> createState() => BookShelfState();
 }
   class BookShelfState extends State<BookShelf> {
+
+     @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadCounter();
+    // _logout();
+  }
+   _loadCounter() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = (preferences.getString('token') ?? '');
+      
+      // phoneNumber = (preferences.getString('phoneNumber') ?? '');
+    });
+  }
 
       static var failureSnackBar = SnackBar(
     elevation: 0,
@@ -146,7 +164,7 @@ class BookShelf extends StatefulWidget {
 
     final response = await http.get(Uri.parse(url), headers: <String, String>{
       'authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNWJiNjdhNGVjZWE4OGY0YThmNTQ2NyIsImlhdCI6MTY2Njk1ODM3MiwiZXhwIjoxNjk4NDk0MzcyfQ.qbGr7KnL_dAGJYMKByp4T3rm86EpLThdn8bj_g7EkGg'
+          '$token'
     });
 
     final body = json.decode(response.body)['Issue'];
@@ -162,7 +180,7 @@ class BookShelf extends StatefulWidget {
                         headers: <String, String>{
                           'Content-type': 'application/json; charset=UTF-8',
                           'authorization':
-                              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNWJiNjdhNGVjZWE4OGY0YThmNTQ2NyIsImlhdCI6MTY2Njk1ODM3MiwiZXhwIjoxNjk4NDk0MzcyfQ.qbGr7KnL_dAGJYMKByp4T3rm86EpLThdn8bj_g7EkGg",
+                              "$token",
                         },
                         body: jsonEncode(<String, String>{
                           "_id": id.toString(),
@@ -196,7 +214,7 @@ class BookShelf extends StatefulWidget {
                         headers: <String, String>{
                           'Content-type': 'application/json; charset=UTF-8',
                           'authorization':
-                              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNWJiNjdhNGVjZWE4OGY0YThmNTQ2NyIsImlhdCI6MTY2Njk1ODM3MiwiZXhwIjoxNjk4NDk0MzcyfQ.qbGr7KnL_dAGJYMKByp4T3rm86EpLThdn8bj_g7EkGg",
+                              "$token",
                         },
                         body: jsonEncode(<String, String>{
                           '_id': id.toString(),

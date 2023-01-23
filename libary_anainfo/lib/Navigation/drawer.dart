@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:libary_anainfo/Auth/LoginScreen.dart';
 import 'package:libary_anainfo/Navigation/bottomNav.dart';
+import 'package:libary_anainfo/chat/chat_login.dart';
 import 'package:libary_anainfo/depertment/civil.dart';
 import 'package:libary_anainfo/depertment/it.dart';
 import 'package:libary_anainfo/depertment/mechanical.dart';
@@ -272,7 +273,7 @@ class _drawerState extends State<drawer> {
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.blueAccent,
             elevation: 0,
             actions: <Widget>[
               IconButton(
@@ -378,10 +379,10 @@ class _drawerState extends State<drawer> {
                   ),
                   title: Text('DashBoard', style: TextStyle(color: Colors.white),),
                   onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     new MaterialPageRoute(
-                    //         builder: (context) => new HomePage()));
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new HomePageView()));
                   },
                 ),
                  ExpansionTile(
@@ -566,10 +567,10 @@ class _drawerState extends State<drawer> {
                     // Update the state of the app
                     // ...
                     // Then close the drawer
-                    // Navigator.push(
-                    //     context,
-                    //     new MaterialPageRoute(
-                    //         builder: (context) => UserNetworkPage()));
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => ChatScreen(username: '',)));
                   },
                 ),
                 ListTile(

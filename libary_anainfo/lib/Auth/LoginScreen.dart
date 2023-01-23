@@ -45,7 +45,7 @@ class _MyLoginState extends State<MyLogin> {
     print(Idcard);
     print(password);
     final response = await http.post(
-      Uri.parse("http://192.168.1.77:4000/users/userLogin"),
+      Uri.parse("http://192.168.1.21:4000/users/userLogin"),
       headers: <String, String>{
         'Content-type': 'application/json; charset=UTF-8',
       },
@@ -63,7 +63,7 @@ class _MyLoginState extends State<MyLogin> {
       preferences.setString('Idcard', Idcard);
       preferences.setString('token', data['data']['token']);
       preferences.setString('username', data['data']['username']);
-      preferences.setString('idcard', data['data']['Idcard'][2]);
+      preferences.setString('idcard', data['data']['Idcard']);
       print(preferences.getString('idcard'));
        preferences.setBool('flag', data['data']['violationFlag']);
        print(preferences.getBool('flag'));

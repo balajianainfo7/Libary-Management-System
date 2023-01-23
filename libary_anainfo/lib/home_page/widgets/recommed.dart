@@ -13,11 +13,12 @@ import 'package:libary_anainfo/new/consttants.dart';
 import 'package:libary_anainfo/new/reading_card_list.dart';
 import 'package:libary_anainfo/new/two_side_rounded_button.dart';
 import 'package:libary_anainfo/sample_home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'BookDetailedpage.dart';
 
 // import '../../../configuration/Food1.dart';
-
+String token = "";
 class RecommedFoods extends StatefulWidget {
   // final String id;
   const RecommedFoods({Key? key}) : super(key: key);
@@ -28,6 +29,23 @@ class RecommedFoods extends StatefulWidget {
 }
 
 class _RecommedFoodsState extends State<RecommedFoods> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadCounter();
+    // _logout();
+  }
+   _loadCounter() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = (preferences.getString('token') ?? '');
+      
+      // phoneNumber = (preferences.getString('phoneNumber') ?? '');
+    });
+  }
 
      static var failureSnackBar = SnackBar(
     elevation: 0,
@@ -99,7 +117,7 @@ class _RecommedFoodsState extends State<RecommedFoods> {
 
     final response = await http.get(Uri.parse(url), headers: <String, String>{
       'authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNWJiNjdhNGVjZWE4OGY0YThmNTQ2NyIsImlhdCI6MTY2Njk1ODM3MiwiZXhwIjoxNjk4NDk0MzcyfQ.qbGr7KnL_dAGJYMKByp4T3rm86EpLThdn8bj_g7EkGg'
+          '$token'
     });
 
     final body = json.decode(response.body);
@@ -119,7 +137,7 @@ class _RecommedFoodsState extends State<RecommedFoods> {
                         headers: <String, String>{
                           'Content-type': 'application/json; charset=UTF-8',
                           'authorization':
-                              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNWJiNjdhNGVjZWE4OGY0YThmNTQ2NyIsImlhdCI6MTY2Njk1ODM3MiwiZXhwIjoxNjk4NDk0MzcyfQ.qbGr7KnL_dAGJYMKByp4T3rm86EpLThdn8bj_g7EkGg",
+                              "$token",
                         },
                         body: jsonEncode(<String, String>{
                           "_id": id.toString(),

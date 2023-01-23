@@ -14,7 +14,8 @@ import 'package:intl_phone_field/phone_number.dart';
 import 'package:libary_anainfo/profile/profile.dart';
 import 'package:mime/mime.dart';
 import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+String token = "";
 class Register extends StatefulWidget {
    static const id = 'Register';
 //  String phoneNumber;
@@ -25,6 +26,23 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadCounter();
+    // _logout();
+  }
+   _loadCounter() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = (preferences.getString('token') ?? '');
+      
+      // phoneNumber = (preferences.getString('phoneNumber') ?? '');
+    });
+  }
   bool _secureText = true;
   
   
@@ -367,7 +385,7 @@ class _RegisterState extends State<Register> {
     imageUploadRequest.headers['Content-type'] = 'application/json';
     imageUploadRequest.headers['Accept'] = 'application/json';
     imageUploadRequest.headers['authorization'] =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNjBmOTIxYWE0MmI3MjdhNTI4N2I4MyIsImlhdCI6MTY2NzMwOTQxOCwiZXhwIjoxNjk4ODQ1NDE4fQ.NDK07VBfP_OCyAUmE1J7c2Tq1rmlQUTg0meWUks8CNs';
+        '$token';
 
     
     imageUploadRequest.fields['imgUrl'] = imgUrl.toString();
@@ -383,6 +401,9 @@ class _RegisterState extends State<Register> {
       print(response.body);
       final Map<String, dynamic> responseData = json.decode(response.body);
       if(response == 200){
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString('picture', responseData['data']);
+          print(preferences.getString('picture'));
         print("object");
       }else{
         print("object1");

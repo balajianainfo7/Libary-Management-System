@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:libary_anainfo/home_page/components/colors.dart';
 import 'package:libary_anainfo/home_page/components/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 String username = "";
+String picture = "";
+String token = '';
 class UserNameText extends StatefulWidget {
   const UserNameText({Key? key}) : super(key: key);
 
@@ -11,6 +17,27 @@ class UserNameText extends StatefulWidget {
 }
 
 class _UserNameTextState extends State<UserNameText> {
+
+  
+  Future<Map<String, dynamic>> fetchDetail() async {
+    final url = 'http://192.168.1.77:4000/users/profile-picture';
+    // print(url);
+
+    final response = await http.get(Uri.parse(url), headers: <String, String>{
+      "authorization":
+          "$token",
+    });
+
+    final body = json.decode(response.body);
+    print(body);
+    print("body");
+    
+    return body ;
+    return body;
+    
+  }
+
+  String foo = dotenv.get('HOST');
   @override
   void initState() {
     super.initState();
@@ -22,8 +49,10 @@ class _UserNameTextState extends State<UserNameText> {
 
     setState(() {
       username = (preferences.getString('username') ?? '');
+      //  picture = (preferences.getString('picture') ?? '');
+       token = (preferences.getString('token') ?? '');
     });
-    var token = await preferences.getString('token') as String;
+    // var token = await preferences.getString('token') as String;
     print(username);
     // if (token == null) {
     //   Navigator.of(context).pushAndRemoveUntil(
@@ -35,6 +64,36 @@ class _UserNameTextState extends State<UserNameText> {
   }
   @override
   Widget build(BuildContext context) {
+     return FutureBuilder(
+            future: fetchDetail(),
+            builder: (context, snapshot) {
+              final users = snapshot.data.toString();
+
+              // final user = users;
+
+              print(users);
+              // print(snapshot);
+
+              if (snapshot.connectionState == ConnectionState.done) {
+                // print(snapshot.data);
+              }
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(child: CircularProgressIndicator());
+                default:
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Some error occurred!'));
+                  } else {
+                    print("snapshot.data");
+                    print(snapshot.data);
+                    return _buildProductCard(snapshot.data);
+                  }
+              }
+            });
+    
+  }
+  Widget _buildProductCard(product){
+    print('${foo}${product["data"]}');
     return Padding(
       padding: EdgeInsets.fromLTRB(
           SizeConfig.screenWidth!/14.17,                 /// 29.0
@@ -55,8 +114,8 @@ class _UserNameTextState extends State<UserNameText> {
                 children: [
                   CircleAvatar(
                           radius: 20.0,
-                          backgroundImage: AssetImage(
-                              'images/R.S. Khurmi.jpg'),
+                          backgroundImage: NetworkImage(
+                              '${foo}${product["data"]}'),
                   ),
                   SizedBox(width: 10,),
                   Padding(

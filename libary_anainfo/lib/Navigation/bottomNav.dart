@@ -11,6 +11,8 @@ import 'package:libary_anainfo/new/geners.dart';
 import 'package:libary_anainfo/profile/profile.dart';
 import 'package:libary_anainfo/profile/searchDelagte.dart';
 
+import '../aaa/sample.dart';
+
 class BottomNav extends StatefulWidget {
   @override
   _BottomNavState createState() => _BottomNavState();
@@ -57,9 +59,9 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   void addHomePage() {
-    listBottomWidget.add(HomePageView());
+    listBottomWidget.add(SamplePageView());
     listBottomWidget.add(HistoryView());
-    listBottomWidget.add(HomePageView1());
+    listBottomWidget.add(Geners());
     listBottomWidget.add(ProfilePage1());
   }
 }

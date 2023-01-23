@@ -7,13 +7,31 @@ import 'package:libary_anainfo/home_page/components/size_config.dart';
 import 'package:readmore/readmore.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+String token = '';
 class DetailPage extends StatefulWidget {
     DetailPage({Key? key, required this.id});
   String id;
   State<DetailPage> createState() => DetailPageState();
 }
   class DetailPageState extends State<DetailPage> {
+
+     @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadCounter();
+    // _logout();
+  }
+   _loadCounter() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = (preferences.getString('token') ?? '');
+      
+      // phoneNumber = (preferences.getString('phoneNumber') ?? '');
+    });
+  }
 
           static var failureSnackBar = SnackBar(
     elevation: 0,
@@ -165,7 +183,7 @@ class DetailPage extends StatefulWidget {
 
     final response = await http.get(Uri.parse(url), headers: <String, String>{
       "authorization":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNWJiNjdhNGVjZWE4OGY0YThmNTQ2NyIsImlhdCI6MTY2Njk1ODM3MiwiZXhwIjoxNjk4NDk0MzcyfQ.qbGr7KnL_dAGJYMKByp4T3rm86EpLThdn8bj_g7EkGg",
+          "$token",
     });
 
     final body = json.decode(response.body)['data'];
@@ -185,7 +203,7 @@ class DetailPage extends StatefulWidget {
                         headers: <String, String>{
                           'Content-type': 'application/json; charset=UTF-8',
                           'authorization':
-                              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhMSI6IjYzNWJiNjdhNGVjZWE4OGY0YThmNTQ2NyIsImlhdCI6MTY2Njk1ODM3MiwiZXhwIjoxNjk4NDk0MzcyfQ.qbGr7KnL_dAGJYMKByp4T3rm86EpLThdn8bj_g7EkGg",
+                              "$token",
                         },
                         body: jsonEncode(<String, String>{
                           "_id": id.toString(),
@@ -337,7 +355,7 @@ class DetailPage extends StatefulWidget {
                         borderRadius: BorderRadius.circular(10),
                         child: Hero(
                           tag: product,
-                          child: Image(image: AssetImage('${foo}${product["image"]}'),
+                          child: Image(image: NetworkImage('${foo}${product["image"]}'),
                             
                             fit: BoxFit.cover,
                             width: 150,
